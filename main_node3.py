@@ -15,6 +15,7 @@ statistics = {
     'downloaded_files': 0,
 }
 
+# Function to request and download missing chunks from peers
 def request_missing_chunks(available_chunks, peer_chunk_map, total_chunks):
     downloaded_chunks = [None] * total_chunks
 
@@ -38,21 +39,26 @@ def request_missing_chunks(available_chunks, peer_chunk_map, total_chunks):
     return downloaded_chunks
 
 def main():
+    # Node 3 only handles 4 chunks, so restrict the total number of chunks to 4
     file_chunks = chunk_file('file_to_share.txt', 512)
-    logging.info(f"Total chunks created: {len(file_chunks)}")
+    file_chunks = file_chunks[:4]  # Node 3 will only handle up to 4 chunks
+    total_chunks = len(file_chunks)  # Ensure Node 3 only deals with 4 chunks
+    logging.info(f"Total chunks created: {total_chunks}")
 
-    available_chunks = {i: file_chunks[i] for i in range(8, 12) if i < len(file_chunks)}
+    # Node 3 starts with no chunks, so it will need to download all chunks
+    available_chunks = {}
     logging.info(f"Node 3 has chunks: {list(available_chunks.keys())}")
 
+    # Node 3 requests chunks from Node 1 and Node 2
     peer_chunk_map = {
-        '127.0.0.1:8000': [i for i in range(0, 4) if i < len(file_chunks)],
-        '127.0.0.1:8001': [i for i in range(4, 8) if i < len(file_chunks)],
-        '127.0.0.1:8003': [i for i in range(12, 16) if i < len(file_chunks)],
+        '127.0.0.1:8000': [0, 1],  # Node 1 has chunks 0 and 1
+        '127.0.0.1:8001': [2, 3],  # Node 2 has chunks 2 and 3
     }
 
-    total_chunks = len(file_chunks)
+    # Request the missing chunks from peers
     downloaded_chunks = request_missing_chunks(available_chunks, peer_chunk_map, total_chunks)
 
+    # If all chunks are successfully downloaded, reconstruct the file
     if None not in downloaded_chunks:
         logging.info(f"Node 3 is reconstructing the file with chunks: {list(range(len(downloaded_chunks)))}")
         rebuild_file(downloaded_chunks, 'reconstructed_file_node3.txt')
@@ -62,7 +68,8 @@ def main():
         logging.error("Failed to download all chunks.")
 
 if __name__ == '__main__':
-    node_3_chunks = [chunk_file('file_to_share.txt', 512)[i] for i in range(8, 12) if i < len(chunk_file('file_to_share.txt', 512))]
-    threading.Thread(target=start_server, args=(8002, node_3_chunks)).start()
+    # Start the server for Node 3, which listens on port 8002
+    node_3_chunks = []
+    threading.Thread(target=start_server, args=(8002, node_3_chunks), daemon=True).start()
     time.sleep(2)
     main()

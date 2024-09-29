@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, scrolledtext
 import sys
 import logging
-from main_node2 import main
+from main_node1 import main
 
 # Redirect logging to the Text widget
 class RedirectText:
