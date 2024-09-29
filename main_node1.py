@@ -45,9 +45,9 @@ def main():
     logging.info(f"Node 1 has chunks: {list(available_chunks.keys())}")
 
     peer_chunk_map = {
-        '127.0.0.1:8001': [i for i in range(4, 8) if i < len(file_chunks)],
-        '127.0.0.1:8002': [i for i in range(8, 12) if i < len(file_chunks)],
-        '127.0.0.1:8003': [i for i in range(12, 16) if i < len(file_chunks)],
+        'proxy22.rt3.io:38788': [i for i in range(4, 8) if i < len(file_chunks)], #Zack
+        'proxy17.rt3.io:33403': [i for i in range(8, 12) if i < len(file_chunks)], #Roshan
+        'proxy17.rt3.io:33408': [i for i in range(12, 16) if i < len(file_chunks)], #Harsh
     }
 
     total_chunks = len(file_chunks)
