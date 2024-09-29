@@ -1,0 +1,5 @@
+This is a sample text file.
+It contains a few lines of text.
+Each line represents a chunk of data that can be shared among the nodes.
+This file will be used as input to demonstrate the P2P file-sharing system.
+Thank you for testing this program!
