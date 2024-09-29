@@ -4,10 +4,20 @@ import hashlib
 # Set up logging to display informational messages
 logging.basicConfig(level=logging.INFO)
 
+# Function to generate a checksum for a data chunk
+def generate_checksum(data):
+    """Generates an MD5 checksum for a given data chunk."""
+    return hashlib.md5(data).hexdigest()
+
+# Function to verify if a chunk matches the expected checksum
+def verify_chunk(chunk, expected_checksum):
+    """Verifies the checksum of a data chunk against an expected checksum."""
+    actual_checksum = generate_checksum(chunk)
+    return actual_checksum == expected_checksum
 
 # Function to compute the hash of a file for integrity verification
 def compute_file_hash(file_path, chunk_size=512):
-    # Initialize a SHA-256 hash function
+    """Computes a SHA-256 hash for the entire file."""
     hash_func = hashlib.sha256()
     
     # Open the file in binary read mode
@@ -22,6 +32,7 @@ def compute_file_hash(file_path, chunk_size=512):
 
 # Function to split a file into chunks
 def chunk_file(file_path, chunk_size=512):
+    """Splits a file into smaller chunks."""
     # Initialize a list to store the file chunks
     chunks = []
     
@@ -49,6 +60,7 @@ def chunk_file(file_path, chunk_size=512):
 
 # Function to rebuild a file from chunks
 def rebuild_file(chunks, output_file):
+    """Rebuilds a file from a list of chunks."""
     # Open the output file in binary write mode
     with open(output_file, 'wb') as f:
         # Loop through each chunk and write it to the output file
