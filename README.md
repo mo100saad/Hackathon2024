@@ -1,6 +1,6 @@
 # Peer-to-Peer Networking System
 
-![Testing Running Image!](images/netowrk.jpeg)
+![Testing Running Image!](images/netowrk.jpg)
 
 The Peer-to-Peer (P2P) Networking System is a Python-based client-server application designed for seamless, real-time communication among multiple nodes. Each node acts as both a client and a server, utilizing TCP/IP protocols, socket programming, and threading libraries to handle data exchange and concurrency efficiently.
 
